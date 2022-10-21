@@ -1,0 +1,8 @@
+microsimCollector: "http://microsimotel-opentelemetry-collector.microsim.svc:14268/api/traces"
+
+jaeger:
+  collector:
+    enabled: false
+
+opentelemetry-collector:
+  enabled: true

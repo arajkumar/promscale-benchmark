@@ -1,0 +1,10 @@
+apiVersion: v2
+name: microsim
+version: 0.0.1
+dependencies:
+  - name: jaeger
+    repository: https://jaegertracing.github.io/helm-charts
+    version: ">=0.62.1"
+  - name: opentelemetry-collector
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    version: ">=0.36.3"
