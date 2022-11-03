@@ -15,8 +15,8 @@ prometheus:
       maxBackoff: 10s
   resources:
     requests:
-      cpu: 40m
-      memory: 400Mi
+      cpu: 2
+      memory: 12Gi
 
 avalanche:
   enabled: true
@@ -24,7 +24,7 @@ avalanche:
     repository: quay.io/prometheuscommunity/avalanche
     tag: main
     pullPolicy: Always
-  replicaCount: 1
+  replicaCount: 8
   extraArgs:
     - --series-interval=315360000
     - --metric-interval=315360000
@@ -35,8 +35,8 @@ avalanche:
     # 30s by Prometheus.
     # To increase the load, we can simply increase the value of
     # replicaCount in avalanche values.
-    - --metric-count=5000
-    - --series-count=120
+    - --metric-count=1000
+    - --series-count=600
     - --label-count=10
     - --value-interval=10
   labels:
@@ -46,3 +46,7 @@ avalanche:
     enabled: true
   serviceAccount:
     create: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2Gi

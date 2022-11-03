@@ -6,12 +6,14 @@ timescaledb-single:
   persistentVolumes:
     data:
       size: 150Gi
+      storageClass: gp3
     wal:
-      size: 20Gi
+      size: 50Gi
+      storageClass: gp3
   resources:
     requests:
-      cpu: 100m
-      memory: 2Gi
+      cpu: "8"
+      memory: 32Gi
   affinityTemplate: |
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -78,6 +80,9 @@ kube-prometheus-stack:
     enabled: false
   alertmanager:
     enabled: false
+  prometheusOperator:
+    admissionWebhooks:
+      enabled: true
   # This prometheus is monitoring the cluster. Do not use it for load generation.
   prometheus:
     prometheusSpec:
@@ -127,4 +132,4 @@ kube-prometheus-stack:
       datasource:
         enabled: false
 opentelemetry-operator:
-  enabled: true
+  enabled: false
