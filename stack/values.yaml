@@ -10,6 +10,17 @@ timescaledb-single:
     wal:
       size: 50Gi
       storageClass: gp3
+  patroni:
+    bootstrap:
+      dcs:
+        postgresql:
+          parameters:
+            checkpoint_timeout: 15min
+            bgwriter_delay: 200ms
+            bgwriter_lru_maxpages: 0
+            bgwriter_lru_multiplier: 1
+            stats_temp_directory: /tmp/pg_stat_temp
+            # timescaledb.max_open_chunks_per_insert: 429
   resources:
     requests:
       cpu: "8"
@@ -39,16 +50,12 @@ promscale:
   connectionSecretName: "tobs-promscale-connection"
   resources:
     requests:
-      memory: 500Mi
-      cpu: 30m
+      memory: 16Gi
+      cpu: "4"
   config:
     startup.dataset.config: |
       metrics:
         default_chunk_interval: 1h
-        compress_data: true
-        default_retention_period: 90d
-      traces:
-        default_retention_period: 30d
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -89,6 +96,7 @@ kube-prometheus-stack:
       remoteWriteDashboards: true
       remoteRead: []
       remoteWrite: []
+      retention: 25d
       replicas: 1
       additionalScrapeConfigsSecret:
         enabled: false
@@ -119,6 +127,8 @@ kube-prometheus-stack:
               topologyKey: "kubernetes.io/hostname"
   grafana:
     enabled: true
+    service:
+      type: LoadBalancer
     env:
       GF_AUTH_ANONYMOUS_ENABLED: true
       GF_AUTH_ANONYMOUS_ORG_ROLE: "Editor"
