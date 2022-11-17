@@ -4,6 +4,8 @@ prometheus:
   remoteWrite:
   - url: http://tobs-promscale.bench.svc:9201/write
     remoteTimeout: 100s
+    metadataConfig:
+      send: false
     # Configuration options in https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#queueconfig
     # queueConfig:
     #   capacity: 100000
@@ -46,7 +48,19 @@ avalanche:
     enabled: true
   serviceAccount:
     create: true
-  resources:
-    requests:
-      cpu: 500m
-      memory: 2Gi
+  # resources:
+  #   requests:
+  #     cpu: 200m
+  #     memory: 2Gi
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+              - timescaledb
+          topologyKey: "kubernetes.io/hostname"

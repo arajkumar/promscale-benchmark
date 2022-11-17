@@ -17,10 +17,15 @@ timescaledb-single:
           parameters:
             checkpoint_timeout: 15min
             bgwriter_delay: 200ms
-            bgwriter_lru_maxpages: 0
-            bgwriter_lru_multiplier: 1
+            bgwriter_lru_maxpages: 100
+            # bgwriter_lru_multiplier: 1
             stats_temp_directory: /tmp/pg_stat_temp
+            shared_buffers: 30GB
+            bgwriter_flush_after: 0
+            autovacuum_max_workers: 1
             # timescaledb.max_open_chunks_per_insert: 429
+  sharedMemory:
+    useMount: true
   resources:
     requests:
       cpu: "8"
@@ -53,6 +58,7 @@ promscale:
       memory: 16Gi
       cpu: "4"
   config:
+    vacuum.parallelism: 1
     startup.dataset.config: |
       metrics:
         default_chunk_interval: 1h
