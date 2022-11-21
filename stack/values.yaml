@@ -19,10 +19,13 @@ timescaledb-single:
             bgwriter_delay: 200ms
             bgwriter_lru_maxpages: 100
             # bgwriter_lru_multiplier: 1
-            stats_temp_directory: /tmp/pg_stat_temp
+            stats_temp_directory: /dev/shm/pg_stat_temp
             shared_buffers: 30GB
             bgwriter_flush_after: 0
             autovacuum_max_workers: 1
+            wal_compression: on
+            max_wal_size: 85GB
+            synchronous_commit: off
             # timescaledb.max_open_chunks_per_insert: 429
   sharedMemory:
     useMount: true

@@ -26,7 +26,7 @@ avalanche:
     repository: quay.io/prometheuscommunity/avalanche
     tag: main
     pullPolicy: Always
-  replicaCount: 8
+  replicaCount: 10
   extraArgs:
     - --series-interval=315360000
     - --metric-interval=315360000
@@ -39,8 +39,8 @@ avalanche:
     # replicaCount in avalanche values.
     - --metric-count=5000
     - --series-count=120
-    - --label-count=10
-    - --value-interval=10
+    - --label-count=5
+    - --value-interval=30
   labels:
     tobs/excluded: "true"
     app.kubernetes.io/part-of: ingest-with-prometheus
